@@ -9,16 +9,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const module_1 = require("magnet-core/module");
-const express = require("express");
 const express_1 = require("./config/express");
-// TODO: Increase the speed of get cert, or anyway to cache it?
-class Express extends module_1.Module {
+class ExpressStart extends module_1.Module {
     setup() {
         return __awaiter(this, void 0, void 0, function* () {
-            const config = this.prepareConfig('express', express_1.default);
-            this.app.express = express();
+            try {
+                const config = this.prepareConfig('express', express_1.default);
+                this.app.expressServer = this.app.express.listen(config.port);
+                this.log.info(`Server started at port ${config.port}`);
+            }
+            catch (err) {
+                this.log.error(err);
+                throw err;
+            }
         });
     }
 }
-exports.default = Express;
-//# sourceMappingURL=index.js.map
+exports.default = ExpressStart;
+//# sourceMappingURL=start.js.map
