@@ -1,16 +1,11 @@
 import { Module } from 'magnet-core/module'
-import defaultConfig from './config/express'
 
-export default class ExpressStart extends Module {
+export default class MagnetExpressStart extends Module {
+  get moduleName () { return 'express' }
+  get defaultConfig () { return __dirname }
+
   async setup () {
-    try {
-      const config = this.prepareConfig('express', defaultConfig)
-
-      this.app.expressServer = this.app.express.listen(config.port)
-      this.log.info(`Server started at port ${config.port}`)
-    } catch (err) {
-      this.log.error(err)
-      throw err
-    }
+    this.app.expressServer = this.app.express.listen(this.config.port)
+    this.log.info(`Server started at port ${this.config.port}`)
   }
 }
